@@ -57,11 +57,11 @@ export default class MenuSelector extends Component {
             <Text>Grafikonok</Text>
           </View>
           <View style={styles.inputBox}>
-            <Text style={styles.title}>Adatrögzítés</Text>
+            <Text style={styles.title}>Fogyasztás felvétele</Text>
             <View style={styles.button}>
               <Button
-                onPress={() => this.props.setActivePage('NewData')}
-                title="új adatok felvétele"
+                onPress={() => this.props.setActivePage('Consumption')}
+                title="Adatfelvétele"
                 color="#841584"
                 accessibilityLabel="Belépés"
               />
