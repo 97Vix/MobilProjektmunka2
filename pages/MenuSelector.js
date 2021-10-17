@@ -12,6 +12,7 @@ import {
 //import { WebView } from 'react-native-webview';
 //import { Icon } from 'react-native-elements'
 import { Header } from 'react-native-elements';
+import AppChart from '../components/AppChart'; 
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -54,7 +55,7 @@ export default class MenuSelector extends Component {
         />
         <View style={styles.container}>
           <View style={styles.inputBox}>
-            <Text>Grafikonok</Text>
+            <AppChart/>
           </View>
           <View style={styles.inputBox}>
             <Text style={styles.title}>Fogyasztás felvétele</Text>
