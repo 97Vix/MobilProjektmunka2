@@ -9,7 +9,7 @@ import { StyleSheet, Text, View, Button, Alert, TextInput } from 'react-native';
 //import Navigator from './routes/Root';
 
 import Login from './pages/Login';
-import Menu from './pages/Menu';
+import Menu from './pages/MenuRoot';
 
 export default class App extends Component {
   constructor(props) {
