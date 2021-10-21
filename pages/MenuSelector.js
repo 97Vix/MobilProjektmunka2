@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { StatusBar } from 'expo-status-bar';
 import React, { Component, useState } from 'react';
 import {
@@ -12,10 +13,35 @@ import {
 //import { WebView } from 'react-native-webview';
 //import { Icon } from 'react-native-elements'
 import { Header } from 'react-native-elements';
-import AppChart from '../components/AppChart'; 
+import AppChart from '../components/AppChart';
+import CustomizedPicker from "../components/CustomizedPicker";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+const charIntervals = ['week', 'mounth', 'year']; 
+
+
+const consumptionData = {
+  labels: [],
+  datasets: [
+    {
+      data: [],
+      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // optional
+      strokeWidth: 2 // optional
+    }
+  ],
+  legend: ["Fogyasztás"], // optional
+
+  set setLabel(newLabels){
+    this.labels=newLabels;
+  },
+
+  set setData(newData){
+    this.datasets[0].data = newData;
+  }
+
+};
+
 
 export default class MenuSelector extends Component {
   constructor(props) {
@@ -29,6 +55,7 @@ export default class MenuSelector extends Component {
       PickerSelectedVal: '',
       selectedValue: '',
       number: '',
+      charInterval: charIntervals[0]
     };
   }
 
@@ -39,7 +66,32 @@ export default class MenuSelector extends Component {
     this.setState({ password: newValue });
   };
 
+  setSelectedCharType = itemValue => {
+    this.setState({charInterval: itemValue});
+  }
+
+  checkitemValue = () => {
+    const { charInterval } = this.state;
+    if(!charIntervals.includes(charInterval));
+  };
+
   render() {
+
+    switch(this.state.charInterval){
+      case 'mounth':
+        consumptionData.setLabel = ["1","2","3","4","5","6","7","8","10"];
+        consumptionData.setData = [10,23,34,24,56,32,23,44,56];
+        break;
+      case 'year':
+        consumptionData.setLabel = ["Január", "Február", "Március", "Április"];
+        consumptionData.setData = [120,234,456,244];
+        break;
+      default:
+        consumptionData.setLabel = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"];
+        consumptionData.setData = [10,23,34,24,56,32];
+        break;
+    }
+
     return (
       <View>
         <Header
@@ -55,7 +107,14 @@ export default class MenuSelector extends Component {
         />
         <View style={styles.container}>
           <View style={styles.inputBox}>
-            <AppChart/>
+              <AppChart chartData={consumptionData}/>
+          </View>
+          <View style={styles.inputBox}>
+            <CustomizedPicker 
+              handler={this.setSelectedCharType} 
+              interval={charIntervals} 
+              selected={this.state.charInterval}
+            />
           </View>
           <View style={styles.inputBox}>
             <Text style={styles.title}>Fogyasztás felvétele</Text>
