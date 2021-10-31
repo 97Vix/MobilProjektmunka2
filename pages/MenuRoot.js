@@ -13,8 +13,9 @@ import {
 //import { Icon } from 'react-native-elements'
 import { Header } from 'react-native-elements';
 
-import MenuSelector from './MenuSelector';
+import PageSelector from './PageSelector';
 import Consumption from './Consumption';
+import ConsumCalculator from './ConsumCalculator';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -36,15 +37,23 @@ export default class Menu extends Component {
       case 'Consumption':
         return (
           <Consumption
+            token={this.props.token}
             setLogin={this.props.setLogin}
             setActivePage={this.setActivePage}
           />
         );
         break;
-
+      case 'ConsumCalculator':
+        return (
+          <ConsumCalculator
+            setLogin={this.props.setLogin}
+            setActivePage={this.setActivePage}
+          />
+        );
+        break;
       default:
         return (
-          <MenuSelector
+          <PageSelector
             setActivePage={this.setActivePage}
             setLogin={this.props.setLogin}
           />
@@ -55,6 +64,7 @@ export default class Menu extends Component {
 }
 
 const styles = StyleSheet.create({
+  /*
   container: {
     //flex: 1,
     backgroundColor: '#fff',
@@ -86,4 +96,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textDecorationLine: 'underline',
   },
+  */
 });

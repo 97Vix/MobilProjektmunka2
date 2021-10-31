@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component, useState } from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 //import { WebView } from 'react-native-webview';
 //import Root from './routes/Root';
 //import { Icon } from 'react-native-elements'
@@ -9,7 +10,7 @@ import { StyleSheet, Text, View, Button, Alert, TextInput } from 'react-native';
 //import Navigator from './routes/Root';
 
 import Login from './pages/Login';
-import Menu from './pages/MenuRoot';
+import MenuRoot from './pages/MenuRoot';
 
 export default class App extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export default class App extends Component {
       name: '',
       loggedIn: false,
       password: '',
+      token: null,
     };
   }
 
@@ -30,20 +32,27 @@ export default class App extends Component {
   setLoggedOut = () => {
     this.setState({ loggedIn: false });
   };
-
+  setToken = newValue => {
+    this.setState({ token: newValue });
+  };
   render() {
     return (
-      <View>
-        <View style={styles.container}>
-          <View>
-            {this.state.loggedIn ? (
-              <Menu setLogin={this.setLoggedOut} />
-            ) : (
-              <Login setter={this.setLoggedIn} />
-            )}
+      <SafeAreaProvider>
+        <View>
+          <View style={styles.container}>
+            <View>
+              {this.state.loggedIn ? (
+                <MenuRoot
+                  token={this.state.token}
+                  setLogin={this.setLoggedOut}
+                />
+              ) : (
+                <Login setToken={this.setToken} setLogin={this.setLoggedIn} />
+              )}
+            </View>
           </View>
         </View>
-      </View>
+      </SafeAreaProvider>
     );
   }
 }

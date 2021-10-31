@@ -1,44 +1,53 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { Component, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  Alert,
-  TextInput,
-  Dimensions,
-} from 'react-native';
-//import { WebView } from 'react-native-webview';
-//import { Icon } from 'react-native-elements'
-//import { navigation } from 'react-navigation';
+import React, { Component } from 'react';
+import { StyleSheet, View, Button, Alert, Dimensions } from 'react-native';
 import { Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
+import web from '../SpringConnect/webServices';
+import Regist from '../components/Registration';
 
-const windowWidth = Dimensions.get('window').width;
+//const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedItem: {
-        title: 'Selected',
-        description: 'Seco',
-      },
-      password: '',
-      PickerSelectedVal: '',
-      selectedValue: '',
-      number: '',
+      visibleReg: false,
     };
   }
+
+  username = '';
+  password = '';
 
   setNumber = newValue => {
     this.setState({ number: newValue });
   };
   setPassword = newValue => {
     this.setState({ password: newValue });
+  };
+  setVisibleReg = value => {
+    this.setState({ visibleReg: value });
+  };
+  login = () => {
+    web
+      .login('TesztElek@teszt.com', 'teszt')
+      .then(response => {
+        if (response.data == 'succesful') {
+          //console.log(response);
+          this.props.setToken(response.headers['set-cookie'][0]);
+          this.props.setLogin(true);
+        } else if (response.data == 'not succesful') {
+          Alert.alert('Belépési hiba', 'Nem sikerült belépni');
+        } else {
+          Alert.alert('Szerver hiba', 'A szerver működésében hiba képet fel.');
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+        Alert.alert('Szerver hiba', error);
+      });
   };
 
   render() {
@@ -55,18 +64,20 @@ export default class Login extends Component {
         <View style={styles.container}>
           <View style={styles.inputBox}>
             <Input
-              placeholder="Felhasználónév"
+              placeholder="Email"
               leftIcon={<Icon name="user" size={24} color="black" />}
+              onChangeText={value => (this.username = value)}
             />
             <Input
               leftIcon={<Icon name="expeditedssl" size={24} color="black" />}
               placeholder="Jelszó"
               secureTextEntry={true}
+              onChangeText={value => (this.password = value)}
             />
             <View style={{ padding: 10 }}>
               <View style={styles.button}>
                 <Button
-                  onPress={() => this.props.setter(true)}
+                  onPress={() => this.login()}
                   title="Belépés"
                   color="black"
                   accessibilityLabel="Belépés"
@@ -74,10 +85,14 @@ export default class Login extends Component {
               </View>
               <View style={styles.button}>
                 <Button
-                  onPress={() => console.log('Regisztráció')}
+                  onPress={() => this.setVisibleReg(true)}
                   title="Regisztráció"
                   color="black"
                   accessibilityLabel="Regisztráció"
+                />
+                <Regist
+                  visible={this.state.visibleReg}
+                  setV={() => this.setVisibleReg(false)}
                 />
               </View>
             </View>

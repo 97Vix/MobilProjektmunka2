@@ -14,22 +14,22 @@ import { Header } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 import Date from '../components/Date';
 import web from '../SpringConnect/webServices';
-
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default class Consumption extends Component {
+export default class ConsumCalculator extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputValue0: null,
-      inputValue1: null,
-      inputValue2: null,
+      inputValue0: '',
+      inputValue1: '',
+      inputValue2: '',
       selectedValue0: null,
-      dateValue: '',
+      resault: 0,
+      resault2: 0,
+      error: '',
     };
   }
-
   setinputValue0 = newValue => {
     this.setState({ inputValue0: newValue });
   };
@@ -42,45 +42,28 @@ export default class Consumption extends Component {
   setSelectedValue0 = newValue => {
     this.setState({ selectedValue0: newValue });
   };
-  setdateValue = newValue => {
-    console.log(newValue);
-    this.setState({ dateValue: newValue });
-  };
-  sendData = () => {
+  calculation() {
     if (
       this.state.inputValue0 === '' ||
       this.state.inputValue1 === '' ||
-      this.state.inputValue2 === '' ||
-      this.state.dateValue === ''
+      this.state.inputValue2 === ''
     ) {
-      Alert.alert('Figyelem!', 'Minden mezőt ki kell tölteni');
+      this.setState({ error: 'Minden mezőt ki kell tölteni' });
       return null;
     }
-
     var price = this.state.inputValue0;
     var quantity = this.state.inputValue1;
     var lenght = this.state.inputValue2;
-    var date = this.state.dateValue;
     this.state.selectedValue0 == 'Ft' && (quantity = quantity / price);
 
-    web
-      .sendConsumption(
-        {
-          price: price,
-          distance: lenght,
-          fuel: quantity,
-          Cdate: date,
-        },
-        this.props.token
-      )
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
+    this.setState({
+      resault: Math.round((100 / lenght) * quantity * 100) / 100,
+    });
+    this.setState({
+      resault2: Math.round(((price * quantity) / lenght) * 100) / 100,
+    });
+    this.setState({ error: '' });
+  }
   render() {
     return (
       <ScrollView
@@ -102,7 +85,7 @@ export default class Consumption extends Component {
                 onPress: () => this.props.setActivePage(''),
               }}
               centerComponent={{
-                text: 'Fogyasztás rögzítése',
+                text: 'Fogyasztás kiszámítása',
                 style: { color: '#fff', fontSize: 20 },
               }}
               rightComponent={{
@@ -114,7 +97,7 @@ export default class Consumption extends Component {
           </View>
           <View style={styles.container}>
             <View style={styles.inputBox}>
-              <Text>Az üzemanyag literenkénti ára (Ft)</Text>
+              <Text>Az üzemanyag literenkénti ára: (Ft)</Text>
               <View style={styles.input}>
                 <TextInput
                   style={{ width: '100%', height: 40, paddingLeft: 10 }}
@@ -124,7 +107,7 @@ export default class Consumption extends Component {
                   keyboardType="numeric"
                 />
               </View>
-              <Text>Mennyit tankoltál? (Liter/Ft)</Text>
+              <Text>A vásárolt mennyiség: </Text>
               <View style={{ flexDirection: 'row' }}>
                 <View style={styles.inputAndPicker}>
                   <TextInput
@@ -148,29 +131,42 @@ export default class Consumption extends Component {
                   </Picker>
                 </View>
               </View>
-              <Text>Mennyit mentél vele?(Km)</Text>
-              <View style={styles.input}>
-                <TextInput
-                  style={{ width: '100%', height: 40, paddingLeft: 10 }}
-                  onChangeText={this.setinputValue2}
-                  value={this.state.inputValue2}
-                  onBlur={this.props.handleBlur}
-                  keyboardType="numeric"
-                />
+              <Text>A megtett út hossza: (km)</Text>
+              <View>
+                <View style={styles.input}>
+                  <TextInput
+                    style={{ width: '100%', height: 40, paddingLeft: 10 }}
+                    onChangeText={this.setinputValue2}
+                    value={this.state.inputValue2}
+                    onBlur={this.props.handleBlur}
+                    keyboardType="numeric"
+                  />
+                </View>
               </View>
-              <Date
-                title={'Tankolás ideje'}
-                // error={""}
-                value={this.state.dateValue}
-                setValue={this.setdateValue}
-              />
               <View style={styles.button}>
                 <Button
-                  onPress={() => this.sendData()}
-                  title="Adatok küldése"
+                  onPress={() => this.calculation()}
+                  title="Számolás"
                   color="#841584"
                 />
               </View>
+              <Text style={{ color: 'red' }}>{this.state.error}</Text>
+              {this.state.resault != 0 && (
+                <View>
+                  <View>
+                    <Text style={styles.resText}>Az átlagos fogyasztás:</Text>
+                    <Text style={styles.resText2}>
+                      {this.state.resault} l/100km
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.resText}>Az üzemanyag költség:</Text>
+                    <Text style={styles.resText2}>
+                      {this.state.resault2} Ft/km
+                    </Text>
+                  </View>
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -195,7 +191,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderWidth: 4,
     borderColor: 'gray',
-    width: '70%',
+    width: '80%',
   },
   input: {
     borderWidth: 0.5,
@@ -221,10 +217,21 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingTop: 15,
+    paddingBottom: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+  },
+  resText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+  },
+  resText2: {
+    alignSelf: 'center',
+    fontSize: 20,
+    //fontWeight: 'bold',
   },
 });
