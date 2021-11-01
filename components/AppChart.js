@@ -18,7 +18,7 @@ export default function AppChart ({chartData}) {
     return (
         <LineChart
             data={chartData}
-            width={screenWidth*0.58}
+            width={screenWidth}
             height={256}
             verticalLabelRotation={30}
             chartConfig={chartConfig}

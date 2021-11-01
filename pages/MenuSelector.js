@@ -18,7 +18,7 @@ import CustomizedPicker from "../components/CustomizedPicker";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const charIntervals = ['week', 'mounth', 'year']; 
+const charIntervals = ['Heti', 'Havi', 'Éves']; 
 
 
 const consumptionData = {
@@ -78,12 +78,24 @@ export default class MenuSelector extends Component {
   render() {
 
     switch(this.state.charInterval){
-      case 'mounth':
+      case 'Havi':
         consumptionData.setLabel = ["1","2","3","4","5","6","7","8","10"];
         consumptionData.setData = [10,23,34,24,56,32,23,44,56];
         break;
-      case 'year':
-        consumptionData.setLabel = ["Január", "Február", "Március", "Április"];
+      case 'Éves':
+        consumptionData.setLabel = [
+                "Jan", 
+                "Feb", 
+                "Már", 
+                "Ápr", 
+                "Máj", 
+                "Jún", 
+                "Júl", 
+                "Aug", 
+                "Szep", 
+                "Okt", 
+                "Nov", 
+                "Dec"];
         consumptionData.setData = [120,234,456,244];
         break;
       default:
@@ -106,7 +118,7 @@ export default class MenuSelector extends Component {
           }}
         />
         <View style={styles.container}>
-          <View style={styles.inputBox}>
+          <View style={styles.chartContainer}>
               <AppChart chartData={consumptionData}/>
           </View>
           <View style={styles.inputBox}>
@@ -127,6 +139,17 @@ export default class MenuSelector extends Component {
               />
             </View>
           </View>
+          <View style={styles.inputBox}>
+            <Text style={styles.title}>Jelzés felvétele</Text>
+            <View style={styles.button}>
+              <Button
+                onPress={() => this.props.setActivePage('Notification')}
+                title="Jelzés felvétele"
+                color="#841584"
+                accessibilityLabel="Belépés"
+              />
+            </View>
+          </View>
         </View>
       </View>
     );
@@ -141,7 +164,7 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
     backgroundColor: '#668cff',
     height: windowHeight,
-    paddingTop: 150,
+    paddingTop: 10,
   },
   inputBox: {
     marginBottom: 30,
@@ -150,6 +173,15 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: 'gray',
     width: '70%',
+  },
+  chartContainer: {
+    marginBottom: 30,
+    backgroundColor: '#b3ffff',
+    padding: 20,
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    borderColor: 'gray',
+    //width: '70%',
   },
   input: {
     height: 50,
