@@ -75,6 +75,13 @@ export default class Consumption extends Component {
       )
       .then(function (response) {
         console.log(response);
+        if (response.data == 'succesful') {
+          Alert.alert('Siker', 'Sikeres feltöltés');
+        } else if (response.data == 'not succesful') {
+          Alert.alert(' Nem sikerült', 'Sikertelen feltöltés');
+        } else {
+          Alert.alert(' Hiba', 'Szerverhiba lépett fel');
+        }
       })
       .catch(function (error) {
         console.log(error);

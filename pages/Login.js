@@ -31,6 +31,7 @@ export default class Login extends Component {
     this.setState({ visibleReg: value });
   };
   login = () => {
+    /*
     web
       .login('TesztElek@teszt.com', 'teszt')
       .then(response => {
@@ -47,7 +48,12 @@ export default class Login extends Component {
       .catch(function (error) {
         console.log(error);
         Alert.alert('Szerver hiba', error);
-      });
+      });*/
+    if (this.username == 'TesztElek@teszt.com' && this.password == 'teszt') {
+    } else {
+      Alert.alert('Belépési hiba', 'Nem sikerült belépni');
+    }
+    this.props.setLogin(true);
   };
 
   render() {
