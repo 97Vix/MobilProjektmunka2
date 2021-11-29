@@ -16,6 +16,8 @@ import { Header } from 'react-native-elements';
 import PageSelector from './PageSelector';
 import Consumption from './Consumption';
 import ConsumCalculator from './ConsumCalculator';
+import Chart from './Chart';
+import AppNotifications from './AppNotifications';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -51,6 +53,22 @@ export default class Menu extends Component {
           />
         );
         break;
+        case 'Chart':
+          return (
+            <Chart
+              setLogin={this.props.setLogin}
+              setActivePage={this.setActivePage}
+            />
+          );
+          break;
+        case 'AppNotifications':
+          return (
+            <AppNotifications
+                setLogin={this.props.setLogin}
+                setActivePage={this.setActivePage}
+            />
+          );
+          break;
       default:
         return (
           <PageSelector

@@ -82,13 +82,13 @@ export default class PageSelector extends Component {
               setActivePage={this.props.setActivePage}
               title={'Értesítések'}
               buttonTitle={'Értesítések kezelése'}
-              navigationTarget={'Consumption'}
+              navigationTarget={'AppNotifications'}
             />
             <Card
               setActivePage={this.props.setActivePage}
               title={'Grafikonok'}
               buttonTitle={'Grafikonok megtekintése'}
-              navigationTarget={'Consumption'}
+              navigationTarget={'Chart'}
             />
           </View>
         </View>
@@ -99,7 +99,6 @@ export default class PageSelector extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
     alignItems: 'center',
     backgroundColor: '#668cff',
     minHeight: windowHeight + 100,
