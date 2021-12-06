@@ -1,5 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { Component, useState } from 'react';
+import { StatusBar } from "expo-status-bar";
+import React, { Component, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,52 +9,52 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
-} from 'react-native';
-import { Header } from 'react-native-elements';
-import { Picker } from '@react-native-picker/picker';
-import Date from '../components/Date';
-import web from '../SpringConnect/webServices';
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+} from "react-native";
+import AppHeader from "../components/AppHeader";
+import { Picker } from "@react-native-picker/picker";
+import Date from "../components/Date";
+import web from "../SpringConnect/webServices";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default class ConsumCalculator extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputValue0: '',
-      inputValue1: '',
-      inputValue2: '',
+      inputValue0: "",
+      inputValue1: "",
+      inputValue2: "",
       selectedValue0: null,
       resault: 0,
       resault2: 0,
-      error: '',
+      error: "",
     };
   }
-  setinputValue0 = newValue => {
+  setinputValue0 = (newValue) => {
     this.setState({ inputValue0: newValue });
   };
-  setinputValue1 = newValue => {
+  setinputValue1 = (newValue) => {
     this.setState({ inputValue1: newValue });
   };
-  setinputValue2 = newValue => {
+  setinputValue2 = (newValue) => {
     this.setState({ inputValue2: newValue });
   };
-  setSelectedValue0 = newValue => {
+  setSelectedValue0 = (newValue) => {
     this.setState({ selectedValue0: newValue });
   };
   calculation() {
     if (
-      this.state.inputValue0 === '' ||
-      this.state.inputValue1 === '' ||
-      this.state.inputValue2 === ''
+      this.state.inputValue0 === "" ||
+      this.state.inputValue1 === "" ||
+      this.state.inputValue2 === ""
     ) {
-      this.setState({ error: 'Minden mezőt ki kell tölteni' });
+      this.setState({ error: "Minden mezőt ki kell tölteni" });
       return null;
     }
     var price = this.state.inputValue0;
     var quantity = this.state.inputValue1;
     var lenght = this.state.inputValue2;
-    this.state.selectedValue0 == 'Ft' && (quantity = quantity / price);
+    this.state.selectedValue0 == "Ft" && (quantity = quantity / price);
 
     this.setState({
       resault: Math.round((100 / lenght) * quantity * 100) / 100,
@@ -62,45 +62,26 @@ export default class ConsumCalculator extends Component {
     this.setState({
       resault2: Math.round(((price * quantity) / lenght) * 100) / 100,
     });
-    this.setState({ error: '' });
+    this.setState({ error: "" });
   }
   render() {
     return (
       <ScrollView
         keyboardShouldPersistTaps="handled"
-        style={{ backgroundColor: '#668cff' }}
+        style={{ backgroundColor: "#668cff" }}
       >
         <View>
-          <View
-            style={{
-              height: 100,
-              justifyContent: 'center',
-            }}
-          >
-            <Header
-              leftComponent={{
-                icon: 'west',
-                color: '#fff',
-                iconStyle: { color: '#fff' },
-                onPress: () => this.props.setActivePage(''),
-              }}
-              centerComponent={{
-                text: 'Fogyasztás kiszámítása',
-                style: { color: '#fff', fontSize: 20 },
-              }}
-              rightComponent={{
-                icon: 'login',
-                color: '#fff',
-                onPress: () => this.props.setLogin(false),
-              }}
-            />
-          </View>
+          <AppHeader
+            title="Fogyasztás kiszámítása"
+            setActivePage={this.props.setActivePage}
+            setLogin={this.props.setLogin}
+          />
           <View style={styles.container}>
             <View style={styles.inputBox}>
               <Text>Az üzemanyag literenkénti ára: (Ft)</Text>
               <View style={styles.input}>
                 <TextInput
-                  style={{ width: '100%', height: 40, paddingLeft: 10 }}
+                  style={{ width: "100%", height: 40, paddingLeft: 10 }}
                   onChangeText={this.setinputValue0}
                   value={this.state.inputValue0}
                   onBlur={this.props.handleBlur}
@@ -108,10 +89,10 @@ export default class ConsumCalculator extends Component {
                 />
               </View>
               <Text>A vásárolt mennyiség: </Text>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 <View style={styles.inputAndPicker}>
                   <TextInput
-                    style={{ width: '100%', height: 40, paddingLeft: 10 }}
+                    style={{ width: "100%", height: 40, paddingLeft: 10 }}
                     onChangeText={this.setinputValue1}
                     value={this.state.inputValue1}
                     onBlur={this.props.handleBlur}
@@ -135,7 +116,7 @@ export default class ConsumCalculator extends Component {
               <View>
                 <View style={styles.input}>
                   <TextInput
-                    style={{ width: '100%', height: 40, paddingLeft: 10 }}
+                    style={{ width: "100%", height: 40, paddingLeft: 10 }}
                     onChangeText={this.setinputValue2}
                     value={this.state.inputValue2}
                     onBlur={this.props.handleBlur}
@@ -150,7 +131,7 @@ export default class ConsumCalculator extends Component {
                   color="#841584"
                 />
               </View>
-              <Text style={{ color: 'red' }}>{this.state.error}</Text>
+              <Text style={{ color: "red" }}>{this.state.error}</Text>
               {this.state.resault != 0 && (
                 <View>
                   <View>
@@ -179,7 +160,7 @@ const styles = StyleSheet.create({
   container: {
     //flex: 1,
     //backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: "center",
     //justifyContent: 'center',
     //backgroundColor: '#668cff',
     minHeight: windowHeight,
@@ -187,32 +168,32 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     marginBottom: 30,
-    backgroundColor: '#b3ffff',
+    backgroundColor: "#b3ffff",
     padding: 20,
     borderWidth: 4,
-    borderColor: 'gray',
-    width: '80%',
+    borderColor: "gray",
+    width: "80%",
   },
   input: {
     borderWidth: 0.5,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderRadius: 5,
     marginLeft: 10,
-    width: '100%',
+    width: "100%",
   },
   inputAndPicker: {
     flex: 1,
     borderWidth: 0.5,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderRadius: 5,
     marginLeft: 10,
-    width: '50%',
+    width: "50%",
   },
   picker: {
     flex: 1,
-    width: '40%',
+    width: "40%",
     borderWidth: 0.5,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderRadius: 5,
   },
   button: {
@@ -221,16 +202,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
+    fontWeight: "bold",
+    textDecorationLine: "underline",
   },
   resText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
+    fontWeight: "bold",
+    textDecorationLine: "underline",
   },
   resText2: {
-    alignSelf: 'center',
+    alignSelf: "center",
     fontSize: 20,
     //fontWeight: 'bold',
   },

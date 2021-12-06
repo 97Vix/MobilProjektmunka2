@@ -1,21 +1,20 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { FAB } from 'react-native-paper';
+
 
 const AppFloatButton = (props) => (
   <FAB
     style={styles.fab}
     icon="plus"
-    onPress={() => console.log('Pressed')}
+    onPress={props.method}
   />
 );
 
 const styles = StyleSheet.create({
   fab: {
-    position: 'absolute',
+    position: 'relative',
     margin: 16,
-    right: 0,
-    bottom: 0,
     backgroundColor: "white",
   },
 })

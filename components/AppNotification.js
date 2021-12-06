@@ -1,8 +1,10 @@
-import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View} from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
+
 const AppNotification = (props) => {
+
   return (
     <View style={{ width: "100%", alignItems: "center" }}>
       <View style={styles.inputBox}>
@@ -13,7 +15,7 @@ const AppNotification = (props) => {
               name="pen"
               size={24}
               color="black"
-              onPress={() => props.setNot("set", props.id)}
+              onPress={props.setNot}
             />
           </View>
           <View style={styles.iconButton}>
@@ -21,7 +23,7 @@ const AppNotification = (props) => {
               name="trash"
               size={24}
               color="red"
-              onPress={() => props.setNot("del", props.id)}
+              onPress={() => props.delNot(props.id)}
             />
           </View>
         </View>

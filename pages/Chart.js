@@ -12,7 +12,7 @@ import {
 } from "react-native";
 //import { WebView } from 'react-native-webview';
 //import { Icon } from 'react-native-elements'
-import { Header } from "react-native-elements";
+import AppHeader from "../components/AppHeader";
 import AppChart from "../components/AppChart";
 import CustomizedPicker from "../components/CustomizedPicker";
 
@@ -121,30 +121,11 @@ export default class Chart extends Component {
 
     return (
       <View>
-        <View
-          style={{
-            height: 100,
-            justifyContent: "center",
-          }}
-        >
-          <Header
-            leftComponent={{
-              icon: "west",
-              color: "#fff",
-              iconStyle: { color: "#fff" },
-              onPress: () => this.props.setActivePage(""),
-            }}
-            centerComponent={{
-              text: "Fogyasztás Grafikon",
-              style: { color: "#fff", fontSize: 20 },
-            }}
-            rightComponent={{
-              icon: "login",
-              color: "#fff",
-              onPress: () => this.props.setLogin(false),
-            }}
-          />
-        </View>
+        <AppHeader
+          title="Fogyasztás Grafikon"
+          setActivePage={this.props.setActivePage}
+          setLogin={this.props.setLogin}
+        />
         <View style={styles.container}>
           <View style={styles.chartContainer}>
             <AppChart chartData={consumptionData} />

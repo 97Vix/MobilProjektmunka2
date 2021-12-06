@@ -4,55 +4,28 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  StatusBar,
+  TextInput,
+  Text,
 } from "react-native";
-import { Header } from "react-native-elements";
 import AppFloatButton from "../components/AppFloatButton";
 import AppNotificationList from "../components/AppNotificationList";
-
+import AppHeader from "../components/AppHeader";
 
 const windowHeight = Dimensions.get("window").height;
 
-
 export default class AppNotifications extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
-      <View>
-        <ScrollView>
-          <View
-            style={{
-              height: 100,
-              justifyContent: "center",
-            }}
-          >
-            <Header
-              leftComponent={{
-                icon: "west",
-                color: "#fff",
-                iconStyle: { color: "#fff" },
-                onPress: () => this.props.setActivePage(""),
-              }}
-              centerComponent={{
-                text: "Fogyasztás Grafikon",
-                style: { color: "#fff", fontSize: 20 },
-              }}
-              rightComponent={{
-                icon: "login",
-                color: "#fff",
-                onPress: () => this.props.setLogin(false),
-              }}
-            />
-          </View>
-        <View style={styles.container}>
-          <AppNotificationList/>
-        </View>
+      <View style={styles.container}>
+        <AppHeader
+          title="Értesítések"
+          setActivePage={this.props.setActivePage}
+          setLogin={this.props.setLogin}
+        />
+        <ScrollView contentContainerStyle={styles.list}>
+          <AppNotificationList />
         </ScrollView>
-        <View>
-          <AppFloatButton />
-        </View>
       </View>
     );
   }
@@ -60,10 +33,15 @@ export default class AppNotifications extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    flex: 1,
     backgroundColor: "#668cff",
-    minHeight: windowHeight - 30,
+    minHeight: windowHeight + 70,
+    paddingTop: 30,
+  },
+  list: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#668cff",
+    //minHeight: windowHeight + 80,
     paddingTop: 30,
   },
   submitButton: {
